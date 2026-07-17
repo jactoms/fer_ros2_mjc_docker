@@ -29,4 +29,8 @@ repositories:
     type: git
     url:  https://github.com/GKnerd/fer_skills.git
     version: main
+  fer_behavior_trees:
+    type: git
+    url:  https://github.com/GKnerd/fer_behavior_trees.git
+    version: main
         
