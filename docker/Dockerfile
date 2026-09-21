@@ -121,6 +121,8 @@ RUN apt-get update && \
     ros-${ROS_DISTRO}-behaviortree-cpp \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip3 install --no-input --no-cache-dir --break-system-packages pycollada
+
 USER ${USER}
 ##############################################################################
 ##                                 Build ROS                                ##
