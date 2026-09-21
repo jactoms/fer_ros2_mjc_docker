@@ -45,10 +45,18 @@ else
     exit 1
 fi
 
+# Select DDS configuration based on host environment
+CYCLONEDDS_CONFIG="cyclone_dds.xml"
+
+if grep -qi microsoft /proc/version; then
+    CYCLONEDDS_CONFIG="cyclone_dds_wsl.xml"
+fi
+
 # Check if DISPLAY is set
 if [ "$DISPLAY" ]; then
     xhost + local:root
 fi
+
 
 # Check and create necessary folders
 for FOLDER in ros2_ws/src env log data; do
@@ -75,6 +83,7 @@ docker run \
     --net host \
     --ipc host \
     -e DISPLAY=$DISPLAY \
+    -e CYCLONEDDS_URI=file:///home/${CONTAINER_USER}/env/${CYCLONEDDS_CONFIG} \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v ~/.Xauthority:/home/${CONTAINER_USER}/.Xauthority \
     -v $PACKAGE_ROOT/ros2_ws:/home/${CONTAINER_USER}/ros2_ws \
@@ -83,4 +92,4 @@ docker run \
     -v $PACKAGE_ROOT/.claude_container:/home/${CONTAINER_USER}/.claude \
     --entrypoint /bin/bash \
     --rm \
-    $PACKAGE_NAME/ros:jazzy_moveit 
+    $PACKAGE_NAME/ros:jazzy_moveit
